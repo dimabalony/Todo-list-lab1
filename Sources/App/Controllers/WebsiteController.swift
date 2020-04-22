@@ -24,7 +24,7 @@ struct WebsiteController: RouteCollection {
         }
         
         return Todo.query(on: req.db).all().flatMap { (todos) in
-            let todosOutput = todos.map { $0.output }
+            let todosOutput = todos.isEmpty ? nil : todos.map { $0.output }
             let context = Context(index: .init(title: "TODO LIST", description: "Page with your TODOS"),
                                   home: .init(todos: todosOutput))
             return req.view.render("home", context)
@@ -90,6 +90,6 @@ struct WebsiteController: RouteCollection {
     }
     
     struct Home: Codable {
-        let todos: [Todo.Output]
+        let todos: [Todo.Output]?
     }
 }

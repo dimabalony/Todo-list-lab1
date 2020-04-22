@@ -1,7 +1,7 @@
 #extend("index"):
     #export("body"):
         <h1 class="text-center"> #(index.title) </h1>
-        #if(!home.todos.isEmpty):
+        #if(home.todos):
             <table>
                 <thead>
                     <tr>
