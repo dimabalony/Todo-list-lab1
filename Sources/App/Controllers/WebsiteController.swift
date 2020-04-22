@@ -20,14 +20,14 @@ struct WebsiteController: RouteCollection {
     func indexHandler(_ req: Request) throws -> EventLoopFuture<View> {
         struct Context: Codable {
             let index: Index
-            let main: Main
+            let home: Home
         }
         
         return Todo.query(on: req.db).all().flatMap { (todos) in
             let todosOutput = todos.map { $0.output }
             let context = Context(index: .init(title: "TODO LIST", description: "Page with your TODOS"),
-                                  main: .init(todos: todosOutput))
-            return req.view.render("main", context)
+                                  home: .init(todos: todosOutput))
+            return req.view.render("home", context)
         }
     }
     
@@ -89,7 +89,7 @@ struct WebsiteController: RouteCollection {
         let description: String
     }
     
-    struct Main: Codable {
+    struct Home: Codable {
         let todos: [Todo.Output]
     }
 }

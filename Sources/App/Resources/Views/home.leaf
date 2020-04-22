@@ -1,7 +1,7 @@
 #extend("index"):
     #export("body"):
         <h1 class="text-center"> #(index.title) </h1>
-        #if(!main.todos.isEmpty):
+        #if(!home.todos.isEmpty):
             <table>
                 <thead>
                     <tr>
@@ -12,7 +12,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    #for(todo in main.todos):
+                    #for(todo in home.todos):
                     <tr>
                         <td><a href="/#(todo.id)">#(todo.id)</a></td>
                         <td>#(todo.title)</td>
@@ -34,7 +34,6 @@
         <form method="POST">
             <label for="title">Title of the task:</label>
             <input type="text" placeholder="Title" name="title" class="form-control" required>
-<!--                <input type="text" placeholder="Status" name="status" class="form-control">-->
             <label for="title">Date when tasks must be completed:</label>
             <input type="date" name="date" class="form-control" placeholder="dd/mm/yyyy (optional)" pattern="(^(((0[1-9]|1[0-9]|2[0-8])[\/](0[1-9]|1[012]))|((29|30|31)[\/](0[13578]|1[02]))|((29|30)[\/](0[4,6,9]|11)))[\/](19|[2-9][0-9])\d\d$)|(^29[\/]02[\/](19|[2-9][0-9])(00|04|08|12|16|20|24|28|32|36|40|44|48|52|56|60|64|68|72|76|80|84|88|92|96)$)">
             <label for="status">Choose a status:</label>
@@ -42,50 +41,8 @@
                 <option value="To do">To do</option>
                 <option value="Done">Done</option>
             </select>
-<!--                <span class="input-group-btn">-->
             <br>
             <input class="btn btn-success" type="submit" value="create"/>
-<!--                    </span>-->
         </form>
     #endexport
 #endextend
-
-<!--<!DOCTYPE html>-->
-<!--<html>-->
-<!--  <head>-->
-<!--    <title>TODO LIST</title>-->
-<!--    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">-->
-<!--  </head>-->
-<!--  <body class="container">-->
-<!--    <h1 class="text-center"> TODO LIST </h1>-->
-<!--    <div class="row">-->
-<!--      <div class="col-xs-12 col-sm-3">-->
-<!--        <h2>Create</h2>-->
-<!--        <form method="POST" action="/user">-->
-<!--          <div class="input-group">-->
-<!--            <input type="text" name="username" class="form-control">-->
-<!--            <span class="input-group-btn">-->
-<!--              <input class="btn btn-success" type="submit" value="create" />-->
-<!--            </span>-->
-<!--          </div>-->
-<!--        </form>-->
-<!--      </div>-->
-<!--      <div class="col-xs-12 col-sm-3">-->
-<!--        <h2>Read</h2>-->
-<!--          <div class="row">-->
-<!--            <div class="col-xs-12">-->
-<!--              <div class="form-group">-->
-<!--                <input type="text" name="username" class="form-control" value="#(user.username)" disabled>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--      </div>-->
-<!--      <div class="col-xs-12 col-sm-3">-->
-<!--        <h2>Update</h2>-->
-<!--      </div>-->
-<!--      <div class="col-xs-12 col-sm-3">-->
-<!--        <h2>Delete</h2>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </body>-->
-<!--</html>-->
