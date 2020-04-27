@@ -15,8 +15,13 @@ public func configure(_ app: Application) throws {
     
     app.views.use(.leaf)
     app.leaf.cache.isEnabled = app.environment.isRelease
-
-    try app.databases.use(.postgres(url: Application.databaseUrl), as: .psql)
+    
+    if let environmentValue = Environment.get("DATABASE_URL"), let url = URL(string: environmentValue) {
+        try app.databases.use(.postgres(url: url), as: .psql)
+    } else {
+        try app.databases.use(.postgres(url: Application.databaseUrl), as: .psql)
+    }
+    
     
 //    app.databases.use(.postgres(
 //        hostname: Environment.get("DATABASE_HOST") ?? "localhost",
