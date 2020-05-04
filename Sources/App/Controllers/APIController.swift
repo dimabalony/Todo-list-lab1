@@ -19,7 +19,7 @@ protocol APIController {
     
     //generic crud methods
     func create(_: Request) throws -> EventLoopFuture<Model.Output>
-    func readAll(_: Request) throws -> EventLoopFuture<Page<Model.Output>>
+    func readAll(_: Request) throws -> EventLoopFuture<[Model.Output]>
     func read(_: Request) throws -> EventLoopFuture<Model.Output>
     func update(_: Request) throws -> EventLoopFuture<Model.Output>
     func delete(_: Request) throws -> EventLoopFuture<HTTPStatus>
@@ -51,8 +51,9 @@ extension APIController {
         return model.save(on: req.db).map { _ in model.output }
     }
     
-    func readAll(_ req: Request) throws -> EventLoopFuture<Page<Model.Output>> {
-        Model.query(on: req.db).paginate(for: req).map { $0.map { $0.output } }
+    func readAll(_ req: Request) throws -> EventLoopFuture<[Model.Output]> {
+        Model.query(on: req.db).all().map { $0.map { $0.output } }
+//        Model.query(on: req.db).paginate(for: req).map { $0.map { $0.output } }
     }
     
     func read(_ req: Request) throws -> EventLoopFuture<Model.Output> {
@@ -82,7 +83,7 @@ extension APIController {
         base.post(use: self.create)
         base.get(use: self.readAll)
         base.get(idPathComponent, use: self.read)
-        base.post(idPathComponent, use: self.update)
+        base.put(idPathComponent, use: self.update)
         base.delete(idPathComponent, use: self.delete)
 
         return base

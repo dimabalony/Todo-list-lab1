@@ -10,7 +10,14 @@ extension Application {
 // configures your application
 public func configure(_ app: Application) throws {
     // uncomment to serve files from /Public folder
+    let configuration = CORSMiddleware.Configuration(
+        allowedOrigin: .all,
+        allowedMethods: [.GET, .POST, .PUT, .OPTIONS, .DELETE, .PATCH],
+        allowedHeaders: [.accept, .authorization, .contentType, .origin, .xRequestedWith, .userAgent, .accessControlAllowOrigin]
+    )
+    let corsMiddleware = CORSMiddleware(configuration: configuration)
     
+    app.middleware.use(corsMiddleware)
     app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
     
     app.views.use(.leaf)
@@ -21,7 +28,6 @@ public func configure(_ app: Application) throws {
     } else {
         try app.databases.use(.postgres(url: Application.databaseUrl), as: .psql)
     }
-    
     
 //    app.databases.use(.postgres(
 //        hostname: Environment.get("DATABASE_HOST") ?? "localhost",
