@@ -6,7 +6,7 @@ import JWT
 
 extension Application {
     static let databaseUrl = URL(string: Environment.get("DB_URL")!)!
-    static let backendURL = Environment.get("BACKEND_URL")!
+    static let frontendURL = Environment.get("FRONTEND_URL")!
 }
 
 extension String {
@@ -21,7 +21,7 @@ extension JWKIdentifier {
 // configures your application
 public func configure(_ app: Application) throws {
     let configuration = CORSMiddleware.Configuration(
-        allowedOrigin: .whitelist([Application.backendURL]),
+        allowedOrigin: .whitelist([Application.frontendURL]),
         allowedMethods: [.GET, .POST, .PUT, .OPTIONS, .DELETE, .PATCH],
         allowedHeaders: [.accept, .authorization, .contentType, .origin, .xRequestedWith, .userAgent, .accessControlAllowOrigin, .allow, .acceptCharset, .accessControlAllowCredentials, .accessControlAllowHeaders, .accessControlRequestHeaders],
         allowCredentials: true
