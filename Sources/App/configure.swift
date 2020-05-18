@@ -2,23 +2,53 @@ import Fluent
 import Vapor
 import Leaf
 import FluentPostgresDriver
+import JWT
 
 extension Application {
     static let databaseUrl = URL(string: Environment.get("DB_URL")!)!
 }
 
+extension String {
+    var bytes: [UInt8] { .init(self.utf8) }
+}
+
+extension JWKIdentifier {
+    static let `public` = JWKIdentifier(string: "public")
+    static let `private` = JWKIdentifier(string: "private")
+}
+
 // configures your application
 public func configure(_ app: Application) throws {
-    // uncomment to serve files from /Public folder
     let configuration = CORSMiddleware.Configuration(
-        allowedOrigin: .all,
+        allowedOrigin: .whitelist(["http://localhost:3000"]),
         allowedMethods: [.GET, .POST, .PUT, .OPTIONS, .DELETE, .PATCH],
-        allowedHeaders: [.accept, .authorization, .contentType, .origin, .xRequestedWith, .userAgent, .accessControlAllowOrigin]
+        allowedHeaders: [.accept, .authorization, .contentType, .origin, .xRequestedWith, .userAgent, .accessControlAllowOrigin, .allow, .acceptCharset, .accessControlAllowCredentials, .accessControlAllowHeaders, .accessControlRequestHeaders],
+        allowCredentials: true
     )
     let corsMiddleware = CORSMiddleware(configuration: configuration)
-    
     app.middleware.use(corsMiddleware)
+    
+    app.middleware.use(ErrorMiddleware.default(environment: app.environment))
+    
     app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
+    
+
+    let privateKey = try String(contentsOfFile: app.directory.workingDirectory + "jwtRS256.key")
+    let privateSigner = try JWTSigner.rs256(key: .private(pem: privateKey.bytes))
+
+    let publicKey = try String(contentsOfFile: app.directory.workingDirectory + "jwtRS256.key.pub")
+    let publicSigner = try JWTSigner.rs256(key: .public(pem: publicKey.bytes))
+
+    app.jwt.signers.use(privateSigner, kid: .private)
+    app.jwt.signers.use(publicSigner, kid: .public, isDefault: true)
+    
+    app.sessions.configuration.cookieName = "accessToken"
+    app.sessions.configuration.cookieFactory = { sessionID in
+        var cookie = HTTPCookies.Value(string: sessionID.string)
+        cookie.isHTTPOnly = true
+        return cookie
+    }
+    app.middleware.use(app.sessions.middleware)
     
     app.views.use(.leaf)
     app.leaf.cache.isEnabled = app.environment.isRelease
@@ -28,15 +58,10 @@ public func configure(_ app: Application) throws {
     } else {
         try app.databases.use(.postgres(url: Application.databaseUrl), as: .psql)
     }
-    
-//    app.databases.use(.postgres(
-//        hostname: Environment.get("DATABASE_HOST") ?? "localhost",
-//        username: Environment.get("DATABASE_USERNAME") ?? "vapor_username",
-//        password: Environment.get("DATABASE_PASSWORD") ?? "vapor_password",
-//        database: Environment.get("DATABASE_NAME") ?? "vapor_database"
-//    ), as: .psql)
 
-    app.migrations.add(CreateTodo())
+    app.migrations.add(Todo.Migration())
+    app.migrations.add(Todo.AuthorMigration())
+    app.migrations.add(User.Migration())
 
     // register routes
     try routes(app)
