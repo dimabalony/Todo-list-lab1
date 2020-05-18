@@ -5,8 +5,16 @@ import Leaf
 func routes(_ app: Application) throws {
 
     let todoController = TodoController()
-    todoController.setup(routes: app.routes, on: "todos")
+    let todo = app.routes.grouped([
+        JWTUserAuthenticator(),
+        User.guardMiddleware()
+    ])
+    todoController.setup(routes: todo, on: "todos")
 
-    let websiteController = WebsiteController()
-    try app.register(collection: websiteController)
+    let authController = AuthController()
+    try app.register(collection: authController)
+    
+//    let websiteController = WebsiteController()
+//    try app.register(collection: websiteController)
+//
 }

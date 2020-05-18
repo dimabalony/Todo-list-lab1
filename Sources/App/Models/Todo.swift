@@ -7,6 +7,7 @@ final class Todo: APIModel {
         let title: String
         let status: Status
         let date: String?
+        var authorID: UUID?
     }
     
     struct Output: Content {
@@ -34,14 +35,18 @@ final class Todo: APIModel {
     
     @Field(key: "date")
     var date: Date?
+    
+    @Parent(key: "author_id")
+    var author: User
 
     init() { }
 
-    init(id: UUID? = nil, title: String, status: Status, date: Date) {
+    init(id: UUID? = nil, title: String, status: Status, date: Date, authorID: UUID) {
         self.id = id
         self.title = title
         self.status = status
         self.date = date
+        self.$author.id = authorID
     }
     
     init(_ input: Input) throws {
@@ -54,6 +59,7 @@ final class Todo: APIModel {
         } else {
             self.date = nil
         }
+        self.$author.id = input.authorID!
     }
     
     func update(_ input: Input) throws {
