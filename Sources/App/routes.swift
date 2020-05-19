@@ -4,7 +4,7 @@ import Leaf
 
 func routes(_ app: Application) throws {
 
-    let todoController = TodoController()
+    let todoController = TodoSocketController()
     let todo = app.routes.grouped([
         JWTUserAuthenticator(),
         User.guardMiddleware()
