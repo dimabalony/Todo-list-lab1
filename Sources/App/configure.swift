@@ -59,11 +59,11 @@ public func configure(_ app: Application) throws {
     } else {
         try app.databases.use(.postgres(url: Application.databaseUrl), as: .psql)
     }
-
+    
     app.migrations.add(Todo.Migration())
     app.migrations.add(Todo.AuthorMigration())
     app.migrations.add(User.Migration())
-
+    
     // register routes
     try routes(app)
 }

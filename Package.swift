@@ -12,7 +12,12 @@ let package = Package(
         .package(url: "https://github.com/vapor/leaf.git", from: "4.0.0-rc"),
         .package(url: "https://github.com/vapor/fluent.git", from: "4.0.0-rc"),
         .package(url: "https://github.com/vapor/fluent-postgres-driver.git", from: "2.0.0-rc"),
-        .package(url: "https://github.com/vapor/jwt.git", from: "4.0.0-rc")
+        .package(url: "https://github.com/vapor/jwt.git", from: "4.0.0-rc"),
+        
+        // 🌐 GraphQL
+        .package(name: "GraphQLKit", url: "https://github.com/maximkrouk/graphql-kit.git", .branch("improvements")), // Vapor Utilities
+        .package(name: "GraphiQLVapor", url: "https://github.com/alexsteinerde/graphiql-vapor.git", from: "2.0.0-beta.1") // Web Query Page
+        
     ],
     targets: [
         .target(name: "App", dependencies: [
@@ -20,7 +25,11 @@ let package = Package(
             .product(name: "Fluent", package: "fluent"),
             .product(name: "FluentPostgresDriver", package: "fluent-postgres-driver"),
             .product(name: "Vapor", package: "vapor"),
-            .product(name: "JWT", package: "jwt")
+            .product(name: "JWT", package: "jwt"),
+            .byName(name: "GraphQLKit"),
+            .byName(name: "GraphiQLVapor")
+//            .product(name: "GraphQL", package: "GraphQLKit"),
+//            .product(name: "GraphiQLVapor", package: "GraphiQLVapor"),
         ]),
         .target(name: "Run", dependencies: ["App"]),
         .testTarget(name: "AppTests", dependencies: [
