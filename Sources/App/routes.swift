@@ -1,6 +1,8 @@
 import Fluent
 import Vapor
 import Leaf
+import GraphQLKit
+import GraphiQLVapor
 
 func routes(_ app: Application) throws {
 
@@ -17,4 +19,12 @@ func routes(_ app: Application) throws {
 //    let websiteController = WebsiteController()
 //    try app.register(collection: websiteController)
 //
+    
+    app
+        .grouped(JWTUserAuthenticator())
+        .register(graphQLSchema: TodoSchema.create(), withResolver: TodoGraphQLController())
+    
+    if !app.environment.isRelease {
+        app.enableGraphiQL()
+    }
 }

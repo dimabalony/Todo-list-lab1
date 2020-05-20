@@ -29,6 +29,15 @@
         }
       },
       {
+        "package": "CRuntime",
+        "repositoryURL": "https://github.com/wickwirew/CRuntime.git",
+        "state": {
+          "branch": null,
+          "revision": "95f911318d8c885f6fc05e971471f94adfd39405",
+          "version": "2.1.2"
+        }
+      },
+      {
         "package": "fluent",
         "repositoryURL": "https://github.com/vapor/fluent.git",
         "state": {
@@ -53,6 +62,42 @@
           "branch": null,
           "revision": "a7b7e341fe998ac1a20eac21962af934146a5de1",
           "version": "2.0.0-rc.1.1"
+        }
+      },
+      {
+        "package": "GraphiQLVapor",
+        "repositoryURL": "https://github.com/alexsteinerde/graphiql-vapor.git",
+        "state": {
+          "branch": null,
+          "revision": "9dd25fb800c83b8bf7765050b94a617917c897b8",
+          "version": "2.0.0-beta.1"
+        }
+      },
+      {
+        "package": "Graphiti",
+        "repositoryURL": "https://github.com/alexsteinerde/Graphiti.git",
+        "state": {
+          "branch": null,
+          "revision": "fd61913593ea49c85bbe74af152cb123fe7998e8",
+          "version": "0.13.0-beta.1"
+        }
+      },
+      {
+        "package": "GraphQL",
+        "repositoryURL": "https://github.com/alexsteinerde/GraphQL.git",
+        "state": {
+          "branch": null,
+          "revision": "e55495ded126bf48d7696fe5a4ec67bccb86838b",
+          "version": "0.13.0-beta.1"
+        }
+      },
+      {
+        "package": "GraphQLKit",
+        "repositoryURL": "https://github.com/maximkrouk/graphql-kit.git",
+        "state": {
+          "branch": "improvements",
+          "revision": "db30c2c26c9cc785df4d3c10a5c6226e14cb7554",
+          "version": null
         }
       },
       {
@@ -116,6 +161,15 @@
           "branch": null,
           "revision": "ee590c42d0b74fb6644c5ec128a2edc86c2858ff",
           "version": "4.0.1"
+        }
+      },
+      {
+        "package": "Runtime",
+        "repositoryURL": "https://github.com/wickwirew/Runtime.git",
+        "state": {
+          "branch": null,
+          "revision": "61c9776f47d2951bdc562486ad348e5e1ca2e180",
+          "version": "2.1.1"
         }
       },
       {

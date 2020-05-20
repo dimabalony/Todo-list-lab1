@@ -5,15 +5,15 @@ final class Todo: APIModel {
     
     struct Input: Content {
         let title: String
-        let status: Status
+        let status: String
         let date: String?
         var authorID: UUID?
     }
     
-    struct Output: Content {
+    struct Output: Content  {
         let id: String
         let title: String
-        let status: Status
+        let status: String
         let date: String?
     }
     
@@ -51,7 +51,7 @@ final class Todo: APIModel {
     
     init(_ input: Input) throws {
         self.title = input.title
-        self.status = input.status
+        self.status = Status(rawValue: input.status) ?? .todo
         if let date = input.date {
             let formatter = DateFormatter()
             formatter.dateFormat = "dd/MM/yyyy"
@@ -64,7 +64,7 @@ final class Todo: APIModel {
     
     func update(_ input: Input) throws {
         self.title = input.title
-        self.status = input.status
+        self.status = Status(rawValue: input.status) ?? .todo
         if let date = input.date {
             let formatter = DateFormatter()
             formatter.dateFormat = "dd/MM/yyyy"
@@ -83,6 +83,6 @@ final class Todo: APIModel {
         } else {
             dateFormatted = nil
         }
-        return .init(id: self.id!.uuidString, title: self.title, status: self.status, date: dateFormatted)
+        return .init(id: self.id!.uuidString, title: self.title, status: self.status.rawValue, date: dateFormatted)
     }
 }
