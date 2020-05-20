@@ -10,7 +10,12 @@ import Graphiti
 
 final class TodoGraphQLController {
     func getAllTodos(request: Request, _: NoArguments, _ notNeeded: EventLoopGroup) throws -> EventLoopFuture<[TodoGraphQL]> {
-        Todo.query(on: request.db).all().map { $0.map { TodoGraphQL($0) } }
+        guard let user = request.auth.get(User.self) else {
+            throw Abort(.unauthorized)
+        }
+        return user.$todos.query(on: request.db)
+            .all()
+            .map { $0.map { TodoGraphQL($0) } }
     }
 }
 
